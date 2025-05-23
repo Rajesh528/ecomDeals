@@ -1,0 +1,14 @@
+<div class="container mt-5">
+  <h2>Login</h2>
+  <form >
+    <div class="mb-3">
+      <label class="form-label">Email or Mobile</label>
+      <input class="form-control" [(ngModel)]="emailOrMobile" name="emailOrMobile" required />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input class="form-control" type="password" [(ngModel)]="password" name="password" required />
+    </div>
+    <button type="button" (click)="onLogin()" class="btn btn-primary">Login</button>
+  </form>
+</div>
