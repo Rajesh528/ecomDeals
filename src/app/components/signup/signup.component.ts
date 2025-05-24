@@ -12,10 +12,10 @@ import { Observable } from 'rxjs';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent  {
   signupForm: FormGroup;
   submitted = false;
-authError$!: Observable<string | null>;
+//  authError$ = this.store.select((state:any) => state.auth.error);
   constructor(private fb: FormBuilder, private store: Store, private router:Router) {
     this.signupForm = this.fb.group({
       username: ['', Validators.required],
@@ -25,10 +25,8 @@ authError$!: Observable<string | null>;
       confirmPassword: ['', Validators.required]
     });
   }
-  ngOnInit(): void {
-    this.authError$ = this.store.select((state:any) => state.auth.error);
-  }
- 
+   
+
   get passwordMismatch(): boolean {
     const { password, confirmPassword } = this.signupForm.value;
     return password !== confirmPassword;
