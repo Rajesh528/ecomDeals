@@ -11,12 +11,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthEffects } from './store/effects/auth.effects';
 import { LoginComponent } from './components/login/login.component';
 import { authReducer } from './store/reducers/auth.reducer';
+import { CommonModule } from '@angular/common';
+import { SignupComponent } from './components/signup/signup.component';
+import { HomeComponent } from './home/home.component';
 // import { ProductEffects } from './store/effects/product.effects';
 
 @NgModule({
   declarations: [
     AppComponent,
-    // LoginComponent
+    HomeComponent,LoginComponent,SignupComponent
   ],
 
   imports: [
@@ -24,13 +27,11 @@ import { authReducer } from './store/reducers/auth.reducer';
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    CommonModule,
     HttpClientModule,
     EffectsModule.forRoot([]),
     StoreModule.forRoot({auth: authReducer }),
     EffectsModule.forFeature([AuthEffects]),
-    // EffectsModule.forRoot([ProductEffects,AuthEffects]),
-    // StoreModule.forRoot({ productState: productReducer,auth: authReducer }),
-    // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [
     provideClientHydration(withEventReplay())

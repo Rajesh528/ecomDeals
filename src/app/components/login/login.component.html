@@ -1,14 +1,115 @@
+
+
+
+
+
 <div class="container mt-5">
-  <h2>Login</h2>
-  <form >
-    <div class="mb-3">
-      <label class="form-label">Email or Mobile</label>
-      <input class="form-control" [(ngModel)]="emailOrMobile" name="emailOrMobile" required />
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm rounded-4 p-4">
+        <h3 class="text-center mb-4">Login</h3>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              formControlName="email"
+              [ngClass]="{ 'is-invalid': submitted && f['email'].invalid }"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && f['email'].errors">
+              <span *ngIf="f['email'].errors['required']">Email is required.</span>
+              <span *ngIf="f['email'].errors['email']">Enter a valid email.</span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              formControlName="password"
+              [ngClass]="{ 'is-invalid': submitted && f['password'].invalid }"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && f['password'].errors">
+              <span *ngIf="f['password'].errors['required']">Password is required.</span>
+              <span *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters.</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+      </div>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Password</label>
-      <input class="form-control" type="password" [(ngModel)]="password" name="password" required />
-    </div>
-    <button type="button" (click)="onLogin()" class="btn btn-primary">Login</button>
-  </form>
+  </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+<!-- <div *ngIf="authError$ | async as error" class="alert alert-danger mt-2">
+  {{ error }}
+</div>
+
+<div class="container vh-100 d-flex align-items-center justify-content-center">
+  <div class="row w-100 shadow-lg rounded overflow-hidden" style="max-width: 900px;">
+
+    <div class="col-md-6 bg-white p-5">
+      <h2 class="mb-4 text-center">Login</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            formControlName="email"
+            [ngClass]="{ 'is-invalid': submitted && loginForm.controls['email'].invalid }"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && loginForm.controls['email'].invalid">
+            Email is required and must be valid.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            formControlName="password"
+            [ngClass]="{ 'is-invalid': submitted && loginForm.controls['password'].invalid }"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && loginForm.controls['password'].invalid">
+            Password is required.
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+
+        <div class="text-center mt-3">
+          Don't have an account? 
+          <a routerLink="/signup">Sign up here</a>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-6 d-none d-md-block p-0">
+      <img
+        src="../../assets/rcCar.jpg"
+        alt="Login image"
+        class="img-fluid h-100 w-100 object-fit-cover"
+        style="object-fit: cover;"
+      />
+    </div>
+
+  </div>
+</div> -->
