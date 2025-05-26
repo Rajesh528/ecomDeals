@@ -3,6 +3,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import * as ProductActions from '../actions/product.actions';
 import { Product } from '../models/product.model';
+import { logout } from '../actions/auth.actions';
 
 // ─── Entity State ─────────────────────────────────────────────
 export interface ProductState extends EntityState<Product> {
@@ -62,7 +63,8 @@ export const productReducer = createReducer(
   on(ProductActions.deleteProductFailure, (state, { error }) => ({
     ...state,
     error
-  }))
+  })),
+  on(logout,()=>initialState)
 );
 
 // ─── Selectors ────────────────────────────────────────────────

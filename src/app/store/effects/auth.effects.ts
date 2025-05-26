@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { signup, signupSuccess, login, loginSuccess, loginFailure, logout, signupFailure } from '../actions/auth.actions';
+import { signup, signupSuccess, login, loginSuccess, loginFailure, logout, signupFailure, addUser } from '../actions/auth.actions';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 
@@ -17,17 +17,16 @@ export class AuthEffects {
       switchMap(({ username, email, mobile, password }) => {
         const newUser = { username, email, mobile, password };
         const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-        const emailExists = storedUsers.some((user: any) => user.email === email);
-        console.log("welcome to effects");
-        if (emailExists) {
+        const emailExists = storedUsers.users.findIndex((user: any) => user.email === email);
+        if (emailExists !== -1) {
           console.log("failed");
           return of(signupFailure({ error: 'Email already exists. Please use a different email.' }));
         }
-        storedUsers.push(newUser);
-        console.log(storedUsers);
+        storedUsers.users.push(newUser);
         localStorage.setItem('users', JSON.stringify(storedUsers));
         this.router.navigate(['/login'])
-        return of(signupSuccess({ user: newUser }));
+        return of(signupSuccess({ user: newUser }),
+        addUser({ user: newUser }));
       })
     )
   );

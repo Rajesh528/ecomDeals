@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
- import * as AuthActions from './store/actions/auth.actions';
+import * as AuthActions from './store/actions/auth.actions';
+import { loadUsersFromStorage } from './store/actions/user.action';
 
 @Component({
   selector: 'app-root',
@@ -8,18 +9,22 @@ import { Store } from '@ngrx/store';
   standalone: false,
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit{
-  title :string = 'ecomDeals';
-  constructor(private store: Store){
+export class AppComponent implements OnInit {
+  title: string = 'ecomDeals';
+  constructor(private store: Store) {
+
 
   }
   ngOnInit() {
-  const user = localStorage.getItem('user');
-  if (user) {
-    this.store.dispatch(AuthActions.loginSuccess({ user: JSON.parse(user) }));
+
+    console.log("app component loaded");
+    this.store.dispatch(loadUsersFromStorage());
+    const user = localStorage.getItem('authUser');
+    if (user) {
+      this.store.dispatch(AuthActions.loginSuccess({ user: JSON.parse(user) }));
+    }
   }
-}
-logout() {
-  this.store.dispatch(AuthActions.logout());
-}
+  logout() {
+    this.store.dispatch(AuthActions.logout());
+  }
 }

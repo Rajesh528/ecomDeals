@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { signupSuccess, loginSuccess, loginFailure,signupFailure, logout } from '../actions/auth.actions';
 
 export interface AuthState {
-  user: { username: string; email: string; mobile: string } | null;
+  user: { username: string; email: string; mobile: string; } | null;
   isAuthenticated: boolean;
   error: string | null;
    token?: string | null;
@@ -13,6 +13,7 @@ user: null,
   token: null,
   isAuthenticated: false,
   error: null,
+  
 };
 
 export const authReducer = createReducer(
@@ -20,7 +21,7 @@ export const authReducer = createReducer(
   on(signupSuccess, (state, { user }) => ({
     ...state,
     user,
-    isAuthenticated: true,
+    isAuthenticated: false,
     error: null,
   })),
   on(signupFailure, (state, { error }) => ({
