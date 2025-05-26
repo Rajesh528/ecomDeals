@@ -39,6 +39,7 @@ export class AuthEffects {
         const storedUser = JSON.parse(localStorage.getItem('users') || '{}');
         const index = storedUser.findIndex((obj:any)=>(obj.email === emailOrMobile || obj.mobile === emailOrMobile) &&
           obj.password === password);
+          console.log(index)
         if (index !== -1) {
           console.log("welcome to effects");
           return of(loginSuccess({ user: storedUser[index] }));
