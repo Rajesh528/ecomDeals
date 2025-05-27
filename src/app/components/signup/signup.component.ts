@@ -8,15 +8,15 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
-   standalone: false,
+  standalone: false,
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit  {
+export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   submitted = false;
-  authError$!: Observable<any>; 
-  constructor(private fb: FormBuilder, private store: Store, private router:Router) {
+  authError$!: Observable<string | null>;
+  constructor(private fb: FormBuilder, private store: Store, private router: Router) {
     this.signupForm = this.fb.group({
       username: ['', Validators.required],
       mobile: ['', Validators.required],
@@ -25,9 +25,9 @@ export class SignupComponent implements OnInit  {
       confirmPassword: ['', Validators.required]
     });
   }
-   ngOnInit(): void {
-     this.authError$ = this.store.select((state:any) => state.auth.error);
-   }
+  ngOnInit(): void {
+    this.authError$ = this.store.select((state: any) => state.auth.error);
+  }
 
   get passwordMismatch(): boolean {
     const { password, confirmPassword } = this.signupForm.value;
@@ -39,8 +39,8 @@ export class SignupComponent implements OnInit  {
     if (this.signupForm.invalid || this.passwordMismatch) return;
 
     const { username, email, mobile, password } = this.signupForm.value;
-    this.store.dispatch(signup( { username, email, mobile, password }));
-    
+    this.store.dispatch(signup({ username, email, mobile, password }));
+
 
   }
 }

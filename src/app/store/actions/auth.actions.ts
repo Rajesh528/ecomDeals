@@ -34,3 +34,4 @@ export const loginFailure = createAction(
 export const addUser = createAction(
   '[Auth] add user',
    props<{ user: User }>());
+export const clearAuthError = createAction('[Auth] Clear Error');

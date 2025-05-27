@@ -10,3 +10,6 @@ export interface AuthState {
   loading: boolean;
   error: string | null;
 }
+export interface NewUser extends User {
+  confirmPassword: string;
+}

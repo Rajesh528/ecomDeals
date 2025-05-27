@@ -4,12 +4,12 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { signup, signupSuccess, login, loginSuccess, loginFailure, logout, signupFailure, addUser } from '../actions/auth.actions';
 import { Router } from '@angular/router';
-import { AuthService } from '../../service/auth.service';
+import { NewUser, User } from '../models/auth.model';
 
 @Injectable()
 export class AuthEffects {
   private actions$ = inject(Actions)
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor( private router: Router) { }
 
   signup$ = createEffect(() =>
     this.actions$.pipe(
@@ -17,7 +17,7 @@ export class AuthEffects {
       switchMap(({ username, email, mobile, password }) => {
         const newUser = { username, email, mobile, password };
         const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-        const emailExists = storedUsers.users.findIndex((user: any) => user.email === email);
+        const emailExists = storedUsers.users.findIndex((user: NewUser) => user.email === email);
         if (emailExists !== -1) {
           console.log("failed");
           return of(signupFailure({ error: 'Email already exists. Please use a different email.' }));
@@ -36,7 +36,7 @@ export class AuthEffects {
       ofType(login),
       switchMap(({ emailOrMobile, password }) => {
         const storedUser = JSON.parse(localStorage.getItem('users') || '{}');
-        const index = storedUser?.users.findIndex((obj:any)=>(obj.email === emailOrMobile || obj.mobile === emailOrMobile) &&
+        const index = storedUser?.users.findIndex((obj:User)=>(obj.email === emailOrMobile || obj.mobile === emailOrMobile) &&
           obj.password === password);
           console.log(index)
         if (index !== -1) {

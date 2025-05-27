@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as AuthActions from './store/actions/auth.actions';
 import { loadUsersFromStorage } from './store/actions/user.action';
-
+import { NavigationStart, Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,7 +11,7 @@ import { loadUsersFromStorage } from './store/actions/user.action';
 })
 export class AppComponent implements OnInit {
   title: string = 'ecomDeals';
-  constructor(private store: Store) {
+  constructor(private router: Router, private store: Store) {
 
 
   }
@@ -23,6 +23,12 @@ export class AppComponent implements OnInit {
     if (user) {
       this.store.dispatch(AuthActions.loginSuccess({ user: JSON.parse(user) }));
     }
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        console.log("change")
+        this.store.dispatch(AuthActions.clearAuthError()); // ✅ Clear auth error on route change
+      }
+    });
   }
   logout() {
     this.store.dispatch(AuthActions.logout());

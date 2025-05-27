@@ -1,4 +1,8 @@
 
+
+<div *ngIf="authError$ | async as error" class="alert alert-danger mt-2">
+  {{ error }}
+</div>
 <div class="container my-5">
   <h2 class="text-center mb-4">Available Products</h2>
 

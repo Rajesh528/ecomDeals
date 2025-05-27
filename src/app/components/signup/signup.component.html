@@ -1,7 +1,7 @@
 
-<!-- <div *ngIf="authError$ | async as error" class="alert alert-danger mt-2">
+<div *ngIf="authError$ | async as error" class="alert alert-danger mt-2">
   {{ error }}
-</div> -->
+</div>
  <div class="container-fluid p-0">
   <div class="row g-0 vh-100">
 
@@ -33,8 +33,9 @@
               [ngClass]="{ 'is-invalid': submitted && signupForm.controls['mobile'].invalid }"
             />
             <div class="invalid-feedback" *ngIf="submitted && signupForm.controls['mobile'].invalid">
-              Mobile number is required.
+             Please Enter A Valid Mobile Number
             </div>
+             
           </div>
 
           <div class="mb-3">

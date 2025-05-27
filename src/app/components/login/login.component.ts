@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
-  authError$!: Observable<any>;
+  authError$!: Observable<string | null>; 
 
   constructor(private fb: FormBuilder, private store: Store, public router: Router) {
     this.loginForm = this.fb.group({

@@ -14,12 +14,13 @@ import { Product } from '../../store/models/product.model';
 export class ProductsPageComponent implements OnInit {
   products$!: Observable<Product[]>;
   loading$!: Observable<boolean>;
-
+  authError$!: Observable<string | null>;
   constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(ProductActions.loadProducts());
     this.products$ = this.store.select(ProductSelectors.selectAllProducts);
     this.loading$ = this.store.select(ProductSelectors.selectProductsLoading);
+      this.authError$ =  this.store.select(ProductSelectors.selectProductsError);
   }
 }
