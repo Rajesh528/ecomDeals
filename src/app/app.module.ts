@@ -18,7 +18,6 @@ import { productReducer } from './store/reducers/product.reducer';
 import { HeaderComponent } from './components/header/header.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-// import { ProductEffects } from './store/effects/product.effects';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { usersReducer } from './store/reducers/user.reducer';
 

@@ -36,12 +36,12 @@ export class AuthEffects {
       ofType(login),
       switchMap(({ emailOrMobile, password }) => {
         const storedUser = JSON.parse(localStorage.getItem('users') || '{}');
-        const index = storedUser.findIndex((obj:any)=>(obj.email === emailOrMobile || obj.mobile === emailOrMobile) &&
+        const index = storedUser?.users.findIndex((obj:any)=>(obj.email === emailOrMobile || obj.mobile === emailOrMobile) &&
           obj.password === password);
           console.log(index)
         if (index !== -1) {
           console.log("welcome to effects");
-          return of(loginSuccess({ user: storedUser[index] }));
+          return of(loginSuccess({ user: storedUser?.users[index] }));
         } else {
           console.log(" effects failed");
           return of(loginFailure({ error: 'Invalid email, mobile, or password' }));

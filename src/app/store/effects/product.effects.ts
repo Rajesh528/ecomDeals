@@ -14,7 +14,7 @@ export class ProductEffects {
         private productService: ProductService
     ) { }
 
-    // LOAD PRODUCTS
+
     loadProducts$ = createEffect(() =>
         this.actions$.pipe(
             ofType(ProductActions.loadProducts),
@@ -31,7 +31,7 @@ export class ProductEffects {
         )
     );
 
-    // ADD PRODUCT
+
     addProduct$ = createEffect(() =>
         this.actions$.pipe(
             ofType(ProductActions.addProduct),
@@ -48,7 +48,7 @@ export class ProductEffects {
         )
     );
 
-    // UPDATE PRODUCT
+
     updateProduct$ = createEffect(() =>
         this.actions$.pipe(
             ofType(ProductActions.updateProduct),
@@ -69,7 +69,6 @@ export class ProductEffects {
         )
     );
 
-    // DELETE PRODUCT
     deleteProduct$ = createEffect(() =>
         this.actions$.pipe(
             ofType(ProductActions.deleteProduct),
