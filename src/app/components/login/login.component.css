@@ -1,8 +1,7 @@
 .bg-login-image {
-  background-image: url('../../../assets/rcCar.jpg'); /* Path relative to src/assets/rcCar.jpg */
-  background-size: cover;    /* Cover the container */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat;
-  width: 100%;
+  background-image: url('../../../assets/rcCar.jpg');
+  background-size: cover;
+  background-position: center;
   height: 100%;
+  width: 100%;
 }

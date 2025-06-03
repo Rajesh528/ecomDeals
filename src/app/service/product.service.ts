@@ -23,7 +23,7 @@ private baseUrl = 'https://fakestoreapi.com/products';
   }
 
   // Update an existing product
-  updateProduct(product: Product): Observable<Product> {
+  updateProduct(product: any): Observable<Product> {
     return this.http.put<Product>(`${this.baseUrl}/${product.id}`, product);
   }
 

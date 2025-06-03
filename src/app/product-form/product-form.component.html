@@ -1,0 +1,29 @@
+<div class="container my-5">
+  <h3>{{ editingProduct ? 'Update Product' : 'Add New Product' }}</h3>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label>Title</label>
+      <input formControlName="title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label>Price</label>
+      <input formControlName="price" class="form-control" type="number" />
+    </div>
+
+    <div class="mb-3">
+      <label>Category</label>
+      <input formControlName="category" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label>Image URL</label>
+      <input formControlName="image" class="form-control" />
+    </div>
+
+    <button class="btn btn-success w-100" type="submit">
+      {{ editingProduct ? 'Update Product' : 'Add Product' }}
+    </button>
+  </form>
+</div>
