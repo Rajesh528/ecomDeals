@@ -9,7 +9,7 @@ import { selectProductById } from '../store/selectors/product.selectors';
 import { Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'app-products-form',
-   standalone: false,
+  standalone: false,
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.css']
 })
@@ -17,28 +17,24 @@ export class ProductFormComponent implements OnInit {
   productForm!: FormGroup;
   editingProduct: Product | null = null;
   product$!: Observable<Product | undefined>;
-   private subscription!: Subscription;
+  private subscription!: Subscription;
 
-  constructor(private fb: FormBuilder, private store: Store, private route:ActivatedRoute, public router: Router) { }
+  constructor(private fb: FormBuilder, private store: Store, private route: ActivatedRoute, public router: Router) { }
 
   ngOnInit() {
-   const productIdRaw =  this.route.snapshot.paramMap.get('id');
-if (productIdRaw !== null && !isNaN(Number(productIdRaw))) {
-  const productId = JSON.parse(productIdRaw);
-  console.log(productId);
+    const productIdRaw = this.route.snapshot.paramMap.get('id');
+    if (productIdRaw !== null && !isNaN(Number(productIdRaw))) {
+      const productId = JSON.parse(productIdRaw);
+      console.log(productId);
 
-  this.product$ = this.store.select(selectProductById(productId));
-  console.log(this.store.select(selectProductById(productId)))
-    this.subscription = this.product$.subscribe(product => {
-      if (product) {
-        this.edit(product);
-      }
-    });
-} else {
-  console.log('No productId found');
-}
-  // this.store.select(selectProductById(productId));
-   console.log(this.route.snapshot.paramMap.get('id'));
+      this.product$ = this.store.select(selectProductById(productId));
+      console.log(this.store.select(selectProductById(productId)))
+
+    } else {
+      console.log('No productId found');
+    }
+    // this.store.select(selectProductById(productId));
+    console.log(this.route.snapshot.paramMap.get('id'));
     this.productForm = this.fb.group({
       title: ['', Validators.required],
       price: ['', Validators.required],
@@ -46,7 +42,14 @@ if (productIdRaw !== null && !isNaN(Number(productIdRaw))) {
       image: ['', Validators.required]
     });
 
-  
+    if (this.product$) {
+      this.subscription = this.product$.subscribe(product => {
+        if (product) {
+          this.edit(product);
+        }
+      });
+    }
+
 
   }
 
@@ -57,13 +60,13 @@ if (productIdRaw !== null && !isNaN(Number(productIdRaw))) {
 
   onSubmit() {
     const product = this.productForm.value;
-    
+
     if (this.editingProduct) {
       console.log(this.editingProduct);
       this.store.dispatch(updateProduct({
         product: {
-          id: this.editingProduct.id, 
-          changes: this.productForm.value 
+          id: this.editingProduct.id,
+          changes: this.productForm.value
         }
       }));
     } else {

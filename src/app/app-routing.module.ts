@@ -21,7 +21,8 @@ const routes: Routes = [
     {path:"product/:id",component:ProductFormComponent, canActivate:[AuthGuard]},
    {
     path: "", redirectTo:"login" , pathMatch:"full"
-  }
+  },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({
