@@ -69,7 +69,9 @@ export const productReducer = createReducer(
     ...state,
     error
   })),
-  on(logout, () => initialState)
+  on(logout, () => ({
+    ...initialState
+  })),
 );
 
 // ─── Selectors ────────────────────────────────────────────────

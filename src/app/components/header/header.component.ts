@@ -19,6 +19,6 @@ export class HeaderComponent {
 
   onLogout() {
     this.store.dispatch(logout());
-    //this.router.navigate(['/login'])
+    this.router.navigate(['/login'])
   }
 }

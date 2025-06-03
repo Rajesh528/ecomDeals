@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
 import { Product } from '../store/models/product.model';
-import { addProduct, updateProduct } from '../store/actions/product.actions';
+import { addProduct, loadProducts, updateProduct } from '../store/actions/product.actions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { selectProductById } from '../store/selectors/product.selectors';
 import { Observable, Subscription } from 'rxjs';
@@ -22,19 +22,15 @@ export class ProductFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private store: Store, private route: ActivatedRoute, public router: Router) { }
 
   ngOnInit() {
+     this.store.dispatch(loadProducts());
     const productIdRaw = this.route.snapshot.paramMap.get('id');
     if (productIdRaw !== null && !isNaN(Number(productIdRaw))) {
       const productId = JSON.parse(productIdRaw);
-      console.log(productId);
-
       this.product$ = this.store.select(selectProductById(productId));
-      console.log(this.store.select(selectProductById(productId)))
-
+     
     } else {
       console.log('No productId found');
     }
-    // this.store.select(selectProductById(productId));
-    console.log(this.route.snapshot.paramMap.get('id'));
     this.productForm = this.fb.group({
       title: ['', Validators.required],
       price: ['', Validators.required],
