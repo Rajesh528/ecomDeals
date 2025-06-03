@@ -1,11 +1,34 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
-  <a class="navbar-brand" href="#">E-Shop</a>
+  <a class="navbar-brand" routerLink="/">E-Shop</a>
 
-  <div class="collapse navbar-collapse justify-content-end">
-    <ul class="navbar-nav">
+  <!-- Hamburger toggle button for mobile -->
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#mainNavbar"
+    aria-controls="mainNavbar"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
+    <ul class="navbar-nav align-items-center gap-2">
+      <!-- Stores Menu -->
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/stores">Stores</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" routerLink="/home">Products</a>
+      </li>
+
+      <!-- Login / Logout Button -->
       <li class="nav-item" *ngIf="isAuthenticated$ | async; else loginButton">
         <button class="btn btn-outline-danger" (click)="onLogout()">Logout</button>
       </li>
+
       <ng-template #loginButton>
         <li class="nav-item">
           <a routerLink="/login" class="btn btn-outline-primary">Login</a>

@@ -20,6 +20,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { usersReducer } from './store/reducers/user.reducer';
+import { StoresComponent } from './stores/stores.component';
 
 export function localStorageSyncReducer(reducer: any): any {
   return localStorageSync({
@@ -37,7 +38,8 @@ const metaReducers: MetaReducer[] = [localStorageSyncReducer];
     LoginComponent,
      SignupComponent,
       ProductsPageComponent,
-      HeaderComponent
+      HeaderComponent,
+      StoresComponent
   ],
 
   imports: [

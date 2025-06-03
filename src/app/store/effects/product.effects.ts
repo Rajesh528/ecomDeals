@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as ProductActions from '../actions/product.actions';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, exhaustMap, map, mergeMap, of } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { Product } from '../models/product.model';
 import { ProductService } from '../../service/product.service';
@@ -13,18 +13,16 @@ export class ProductEffects {
 
         private productService: ProductService
     ) { }
-
-
     loadProducts$ = createEffect(() =>
         this.actions$.pipe(
             ofType(ProductActions.loadProducts),
-            mergeMap(() =>
+            exhaustMap(() =>
                 this.productService.getProducts().pipe(
                     map((products: Product[]) =>
                         ProductActions.loadProductsSuccess({ products })
                     ),
                     catchError(error =>
-                        of(ProductActions.loadProductsFailure({ error: "unable to load the products" }))
+                        of(ProductActions.loadProductsFailure({ error: 'unable to load the products' }))
                     )
                 )
             )

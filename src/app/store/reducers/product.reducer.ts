@@ -9,6 +9,7 @@ import { logout } from '../actions/auth.actions';
 export interface ProductState extends EntityState<Product> {
   loading: boolean;
   error: string | null;
+  loaded: boolean;
 }
 
 // ─── Adapter ──────────────────────────────────────────────────
@@ -16,7 +17,8 @@ export const adapter: EntityAdapter<Product> = createEntityAdapter<Product>();
 
 export const initialState: ProductState = adapter.getInitialState({
   loading: false,
-  error: null
+  error: null,
+  loaded: false 
 });
 
 // ─── Reducer ──────────────────────────────────────────────────
@@ -30,7 +32,7 @@ export const productReducer = createReducer(
     error: null
   })),
   on(ProductActions.loadProductsSuccess, (state, { products }) =>
-    adapter.setAll(products, { ...state, loading: false })
+    adapter.setAll(products, { ...state, loading: false ,loaded: true})
   ),
   on(ProductActions.loadProductsFailure, (state, { error }) => ({
     ...state,
@@ -44,7 +46,7 @@ export const productReducer = createReducer(
   ),
   on(ProductActions.addProductFailure, (state, { error }) => ({
     ...state,
-    error
+    error,loaded: false
   })),
 
   // Update product
