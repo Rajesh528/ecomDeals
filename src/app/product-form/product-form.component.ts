@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Product } from '../store/models/product.model';
 import { addProduct, updateProduct } from '../store/actions/product.actions';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { selectProductById } from '../store/selectors/product.selectors';
 import { Observable, Subscription } from 'rxjs';
 @Component({
@@ -19,21 +19,26 @@ export class ProductFormComponent implements OnInit {
   product$!: Observable<Product | undefined>;
    private subscription!: Subscription;
 
-  constructor(private fb: FormBuilder, private store: Store, private router:ActivatedRoute) { }
+  constructor(private fb: FormBuilder, private store: Store, private route:ActivatedRoute, public router: Router) { }
 
   ngOnInit() {
-   const productIdRaw =  this.router.snapshot.paramMap.get('id');
-if (productIdRaw !== null) {
+   const productIdRaw =  this.route.snapshot.paramMap.get('id');
+if (productIdRaw !== null && !isNaN(Number(productIdRaw))) {
   const productId = JSON.parse(productIdRaw);
   console.log(productId);
 
   this.product$ = this.store.select(selectProductById(productId));
   console.log(this.store.select(selectProductById(productId)))
+    this.subscription = this.product$.subscribe(product => {
+      if (product) {
+        this.edit(product);
+      }
+    });
 } else {
   console.log('No productId found');
 }
   // this.store.select(selectProductById(productId));
-   console.log(this.router.snapshot.paramMap.get('id'));
+   console.log(this.route.snapshot.paramMap.get('id'));
     this.productForm = this.fb.group({
       title: ['', Validators.required],
       price: ['', Validators.required],
@@ -41,11 +46,7 @@ if (productIdRaw !== null) {
       image: ['', Validators.required]
     });
 
-    this.subscription = this.product$.subscribe(product => {
-      if (product) {
-        this.edit(product);
-      }
-    });
+  
 
   }
 
@@ -61,13 +62,14 @@ if (productIdRaw !== null) {
       console.log(this.editingProduct);
       this.store.dispatch(updateProduct({
         product: {
-          id: this.editingProduct.id, // The existing product ID
-          changes: this.productForm.value // The updated fields
+          id: this.editingProduct.id, 
+          changes: this.productForm.value 
         }
       }));
     } else {
       this.store.dispatch(addProduct({ product }));
     }
+    this.router.navigate(['/home']);
     this.productForm.reset();
     this.editingProduct = null;
   }

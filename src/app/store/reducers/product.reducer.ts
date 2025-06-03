@@ -18,7 +18,7 @@ export const adapter: EntityAdapter<Product> = createEntityAdapter<Product>();
 export const initialState: ProductState = adapter.getInitialState({
   loading: false,
   error: null,
-  loaded: false 
+  loaded: false
 });
 
 // ─── Reducer ──────────────────────────────────────────────────
@@ -32,7 +32,7 @@ export const productReducer = createReducer(
     error: null
   })),
   on(ProductActions.loadProductsSuccess, (state, { products }) =>
-    adapter.setAll(products, { ...state, loading: false ,loaded: true})
+    adapter.setAll(products, { ...state, loading: false, loaded: true })
   ),
   on(ProductActions.loadProductsFailure, (state, { error }) => ({
     ...state,
@@ -46,10 +46,13 @@ export const productReducer = createReducer(
   ),
   on(ProductActions.addProductFailure, (state, { error }) => ({
     ...state,
-    error,loaded: false
+    error, loaded: false
   })),
 
   // Update product
+  on(ProductActions.updateProduct, (state, { product }) => (
+    adapter.updateOne(product, state)
+  )),
   on(ProductActions.updateProductSuccess, (state, { product }) =>
     adapter.updateOne(product, state)
   ),
@@ -66,7 +69,7 @@ export const productReducer = createReducer(
     ...state,
     error
   })),
-  on(logout,()=>initialState)
+  on(logout, () => initialState)
 );
 
 // ─── Selectors ────────────────────────────────────────────────
