@@ -29,7 +29,8 @@ export const productReducer = createReducer(
   on(ProductActions.loadProducts, state => ({
     ...state,
     loading: true,
-    error: null
+    error: null,
+     loaded: true
   })),
   on(ProductActions.loadProductsSuccess, (state, { products }) =>
     adapter.setAll(products, { ...state, loading: false, loaded: true })
