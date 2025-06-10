@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AuthState } from '../../store/reducers/auth.reducer';
+import { AuthState } from '../../store/reducers/auth/auth.reducer';
 import { logout } from '../../store/actions/auth.actions';
 
 @Component({

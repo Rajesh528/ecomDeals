@@ -25,8 +25,7 @@ export class AppComponent implements OnInit {
     }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        console.log("change")
-        this.store.dispatch(AuthActions.clearAuthError()); // ✅ Clear auth error on route change
+        this.store.dispatch(AuthActions.clearAuthError()); 
       }
     });
   }

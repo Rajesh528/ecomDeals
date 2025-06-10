@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Product } from '../store/models/product.model';
 import { addProduct, loadProducts, updateProduct } from '../store/actions/product.actions';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectProductById } from '../store/selectors/product.selectors';
+import { selectProductById } from '../store/selectors/products/product.selectors';
 import { Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'app-products-form',

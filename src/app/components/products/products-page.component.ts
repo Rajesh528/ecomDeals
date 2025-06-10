@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
-import * as ProductSelectors from '../../store/selectors/product.selectors';
+import * as ProductSelectors from '../../store/selectors/products/product.selectors';
 import * as ProductActions from '../../store/actions/product.actions';
 import { Product } from '../../store/models/product.model';
 import { Router } from '@angular/router';
@@ -24,6 +24,7 @@ export class ProductsPageComponent implements OnInit {
     this.loading$ = this.store.select(ProductSelectors.selectProductsLoading);
     this.authError$ = this.store.select(ProductSelectors.selectProductsError);
     this.store.select(ProductSelectors.selectProductLoaded).pipe(take(1)).subscribe(loaded => {
+      console.log(loaded);
       if (!loaded) {
         this.store.dispatch(ProductActions.loadProducts());
       }

@@ -45,28 +45,18 @@ export class ProductEffects {
             )
         )
     );
-
-
-    updateProduct$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(ProductActions.updateProduct),
-            mergeMap(({ product }) =>
-                this.productService.updateProduct(product).pipe(
-                    map((updated: Product) => {
-                        const update: Update<Product> = {
-                            id: updated.id,
-                            changes: updated
-                        };
-                        return ProductActions.updateProductSuccess({ product: update });
-                    }),
-                    catchError(error =>
-                        of(ProductActions.updateProductFailure({ error: error.message }))
-                    )
-                )
-            )
-        )
-    );
-
+  updateProduct$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActions.updateProduct),
+      mergeMap(({ product }) => {
+        const update: Update<Product> = {
+          id: Number(product.id),
+          changes: product.changes
+        };
+        return of(ProductActions.updateProductSuccess({ product: update }));
+      })
+    )
+  );
 
     deleteProduct$ = createEffect(() =>
         this.actions$.pipe(

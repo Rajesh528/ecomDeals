@@ -1,9 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
-import * as ProductActions from '../actions/product.actions';
-import { Product } from '../models/product.model';
-import { logout } from '../actions/auth.actions';
+import * as ProductActions from '../../actions/product.actions';
+import { Product } from '../../models/product.model';
+import { logout } from '../../actions/auth.actions';
 
 // ─── Entity State ─────────────────────────────────────────────
 export interface ProductState extends EntityState<Product> {
@@ -54,9 +54,15 @@ export const productReducer = createReducer(
   on(ProductActions.updateProduct, (state, { product }) => (
     adapter.updateOne(product, state)
   )),
+  // on(ProductActions.updateProductSuccess, (state, { product }) =>
+  //   adapter.updateOne(product, state)
+  // ),
   on(ProductActions.updateProductSuccess, (state, { product }) =>
-    adapter.updateOne(product, state)
-  ),
+  adapter.updateOne(product, {
+    ...state,
+    loaded: true
+  })
+),
   on(ProductActions.updateProductFailure, (state, { error }) => ({
     ...state,
     error
