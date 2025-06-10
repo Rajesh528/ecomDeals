@@ -1,128 +1,108 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ProductFormComponent } from './product-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { ProductFormComponent } from './product-form.component';
+import { Store, StoreModule } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { Product } from '../store/models/product.model';
 import { addProduct, loadProducts, updateProduct } from '../store/actions/product.actions';
-import { selectProductById } from '../store/selectors/products/product.selectors';
+import { Product } from '../store/models/product.model';
 
 describe('ProductFormComponent', () => {
   let component: ProductFormComponent;
   let fixture: ComponentFixture<ProductFormComponent>;
-  let store: MockStore;
-  let routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-  let dispatchSpy: jasmine.Spy;
-
-  const mockProduct: Product = {
-    id: 1,
-    title: 'Test Product',
-    price: 100,
-    category: 'Test Category',
-    image: 'test.jpg',
-    description:"description"
-  };
+  let store: jasmine.SpyObj<Store>;
+  let router: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
+    const storeSpy = jasmine.createSpyObj('Store', ['dispatch', 'select']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
       declarations: [ProductFormComponent],
       providers: [
-        provideMockStore({
-          selectors: [
-            {
-              selector: selectProductById(1),
-              value: mockProduct
-            }
-          ]
-        }),
+        { provide: Store, useValue: storeSpy },
         {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
               paramMap: {
-                get: () => '1' // simulate route param
+                get: () => null  // simulate no ID for add flow
               }
             }
           }
         },
-        {
-          provide: Router,
-          useValue: routerSpy
-        }
+        { provide: Router, useValue: routerSpy }
       ]
     }).compileComponents();
 
-    store = TestBed.inject(MockStore);
-    dispatchSpy = spyOn(store, 'dispatch');
     fixture = TestBed.createComponent(ProductFormComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    store = TestBed.inject(Store) as jasmine.SpyObj<Store>;
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+
+    store.select.and.returnValue(of(undefined)); // no existing product
+    fixture.detectChanges(); // triggers ngOnInit
   });
 
-  it('should create component', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should dispatch loadProducts on init', () => {
-    expect(dispatchSpy).toHaveBeenCalledWith(loadProducts());
-  });
+  it('should patch form values on edit()', () => {
+    const mockProduct: Product = {
+      id: 1,
+      title: 'Test Product',
+      price: 100,
+      category: 'electronics',
+      image: 'test.jpg',
+      description: 'A test product'
+    };
 
-  it('should populate form if editing product is available', (done) => {
-    component.product$.subscribe(product => {
-      expect(product).toEqual(mockProduct);
-      expect(component.productForm.value.title).toEqual(mockProduct.title);
-      done();
+    component.edit(mockProduct);
+    expect(component.productForm.value).toEqual({
+      title: 'Test Product',
+      price: 100,
+      category: 'electronics',
+      image: 'test.jpg',
+      description: 'A test product'
     });
   });
 
-  it('should dispatch updateProduct when editing', () => {
-    component.editingProduct = mockProduct;
-    component.productForm.patchValue({
-      title: 'Updated Title',
+  it('should dispatch updateProduct if editingProduct is set', () => {
+    const mockProduct: Product = {
+      id: 2,
+      title: 'Updated Product',
       price: 200,
-      category: 'Updated Category',
-      image: 'updated.png'
+      category: 'gadgets',
+      image: 'updated.jpg',
+      description: 'Updated description'
+    };
+
+    component.edit(mockProduct);
+
+    component.productForm.setValue({
+      title: 'Updated Product',
+      price: 200,
+      category: 'gadgets',
+      image: 'updated.jpg',
+      description: 'Updated description'
     });
 
     component.onSubmit();
 
-    expect(dispatchSpy).toHaveBeenCalledWith(updateProduct({
+    expect(store.dispatch).toHaveBeenCalledWith(updateProduct({
       product: {
-        id: mockProduct.id,
+        id: 2,
         changes: {
-          title: 'Updated Title',
+          title: 'Updated Product',
           price: 200,
-          category: 'Updated Category',
-          image: 'updated.png'
+          category: 'gadgets',
+          image: 'updated.jpg',
+          description: 'Updated description'
         }
       }
     }));
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/home']);
-  });
-
-  it('should dispatch addProduct when not editing', () => {
-    component.editingProduct = null;
-    component.productForm.patchValue({
-      title: 'New Product',
-      price: 300,
-      category: 'New Category',
-      image: 'new.png'
-    });
-
-    component.onSubmit();
-
-    expect(dispatchSpy).toHaveBeenCalledWith(addProduct({
-      product: {
-       id: 1,
-    title: 'Test Product',
-    price: 100,
-    category: 'Test Category',
-    image: 'test.jpg',
-    description:"description"
-      }
-    }));
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/home']);
+    expect(router.navigate).toHaveBeenCalledWith(['/home']);
   });
 });

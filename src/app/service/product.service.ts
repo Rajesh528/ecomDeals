@@ -26,9 +26,4 @@ private baseUrl = 'https://fakestoreapi.com/products';
   updateProduct(product: any): Observable<Product> {
     return this.http.put<Product>(`${this.baseUrl}/${product.id}`, product);
   }
-
-  // Delete a product
-  deleteProduct(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
-  }
 }

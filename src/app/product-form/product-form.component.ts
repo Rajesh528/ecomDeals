@@ -35,7 +35,8 @@ export class ProductFormComponent implements OnInit {
       title: ['', Validators.required],
       price: ['', Validators.required],
       category: ['', Validators.required],
-      image: ['', Validators.required]
+      image: ['', Validators.required],
+       description: ['', Validators.required]
     });
 
     if (this.product$) {
